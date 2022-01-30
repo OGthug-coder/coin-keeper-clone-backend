@@ -47,9 +47,9 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: sudo service supervisor stop | 
-          rm -rf /home/${{ secrets.SSH_USER }}/publish/master
+          rm -rf /home/${{ secrets.SSH_USER }}/var/www/coinkeeper
     - name: Deploy with rsync
-      run: rsync -avz ./CoinKeeper.Api/bin/Release/net6.0/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/publish/master
+      run: rsync -avz ./CoinKeeper.Api/bin/Release/net6.0/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/var/www/coinkeeper
     - name: Restart Supervisor
       uses: appleboy/ssh-action@master
       with:
