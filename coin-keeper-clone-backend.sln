@@ -1,6 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "coin-keeper-clone-backend", "coin-keeper-clone-backend\coin-keeper-clone-backend.csproj", "{54C2B8AC-05D7-4D9F-B00C-FCC65963822A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinKeeper.Api", "CoinKeeper.Api\CoinKeeper.Api.csproj", "{54C2B8AC-05D7-4D9F-B00C-FCC65963822A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinKeeper.Domain", "CoinKeeper.Domain\CoinKeeper.Domain.csproj", "{106584A0-A671-48B8-A600-FF27B6CAA059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinKeeper.DataAccess", "CoinKeeper.DataAccess\CoinKeeper.DataAccess.csproj", "{6B067E0E-B6CC-4EEE-B5AF-08838AD0EBB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinKeeper.BusinessLogic", "CoinKeeper.BusinessLogic\CoinKeeper.BusinessLogic.csproj", "{94574C6C-4F89-4044-BA31-DED7D7C5515E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinKeeper.UnitTests", "CoinKeeper.UnitTests\CoinKeeper.UnitTests.csproj", "{3A022DFA-2274-4EC3-9B13-37082E0B6B46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +20,21 @@ Global
 		{54C2B8AC-05D7-4D9F-B00C-FCC65963822A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54C2B8AC-05D7-4D9F-B00C-FCC65963822A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54C2B8AC-05D7-4D9F-B00C-FCC65963822A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{106584A0-A671-48B8-A600-FF27B6CAA059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{106584A0-A671-48B8-A600-FF27B6CAA059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{106584A0-A671-48B8-A600-FF27B6CAA059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{106584A0-A671-48B8-A600-FF27B6CAA059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B067E0E-B6CC-4EEE-B5AF-08838AD0EBB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B067E0E-B6CC-4EEE-B5AF-08838AD0EBB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B067E0E-B6CC-4EEE-B5AF-08838AD0EBB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B067E0E-B6CC-4EEE-B5AF-08838AD0EBB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94574C6C-4F89-4044-BA31-DED7D7C5515E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94574C6C-4F89-4044-BA31-DED7D7C5515E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94574C6C-4F89-4044-BA31-DED7D7C5515E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94574C6C-4F89-4044-BA31-DED7D7C5515E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A022DFA-2274-4EC3-9B13-37082E0B6B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A022DFA-2274-4EC3-9B13-37082E0B6B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A022DFA-2274-4EC3-9B13-37082E0B6B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A022DFA-2274-4EC3-9B13-37082E0B6B46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
