@@ -1,0 +1,59 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Publish
+      run: dotnet publish --configuration Release
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+    - name: Provide application.json
+      run: |
+        echo $DEV_ENV_FILE >> ./CoinKeeper.Api/appsettings.json
+        echo $DEV_ENV_FILE >> ./CoinKeeper.Api/bin/Release/net6.0/appsettings.json
+        cat ./CoinKeeper.Api/appsettings.json
+      shell: bash
+      env:
+        DEV_ENV_FILE: ${{ secrets.APPSETTINGS }}
+    - name: Adding Known Hosts
+      run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+    - name: Stop Supervisor Service
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: sudo service supervisor stop | 
+          rm -rf /home/${{ secrets.SSH_USER }}/publish/master
+    - name: Deploy with rsync
+      run: rsync -avz ./CoinKeeper.Api/bin/Release/net6.0 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/publish/master
+    - name: Restart Supervisor
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: sudo service supervisor start
