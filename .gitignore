@@ -1,0 +1,7 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+./coin-keeper-clone-backend/appsettings.Development.json
+./coin-keeper-clone-backend/appsettings.json
