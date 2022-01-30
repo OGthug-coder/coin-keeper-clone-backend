@@ -49,7 +49,7 @@ jobs:
         script: sudo service supervisor stop | 
           rm -rf /home/${{ secrets.SSH_USER }}/var/www/coinkeeper
     - name: Deploy with rsync
-      run: rsync -avz ./CoinKeeper.Api/bin/Release/net6.0/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/var/www/coinkeeper
+      run: rsync -avz ./CoinKeeper.Api/bin/Release/net6.0/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}var/www/coinkeeper
     - name: Restart Supervisor
       uses: appleboy/ssh-action@master
       with:
