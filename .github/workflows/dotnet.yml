@@ -56,4 +56,4 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: sudo service supervisor start
+        script: echo ${{ secrets.USER_PASSWORD }} | sudo -S service supervisor start
