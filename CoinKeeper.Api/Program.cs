@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
@@ -29,10 +29,11 @@ else
 
 app.UseForwardedHeaders();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.UseStaticFiles();
+app.UseRouting();
 app.MapControllers();
 app.MapHealthChecks("/health");
+app.MapFallbackToFile("index.html");
 
 app.Run();
