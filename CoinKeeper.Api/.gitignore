@@ -368,3 +368,5 @@ appsettings.Development.json
 .env
 .env.development
 .env.development.local
+
+build/
