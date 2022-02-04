@@ -30,6 +30,7 @@ else
 app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();
