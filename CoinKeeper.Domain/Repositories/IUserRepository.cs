@@ -11,7 +11,7 @@ public interface IUserRepository
 
     Task<User> FindByIdAsync(string id);
 
-    Task<User> FindByNameAsync(string name);
+    Task<User> FindByNameAsync(string normalizedName);
 
     Task<User> UpdateUserAsync(User user);
 }

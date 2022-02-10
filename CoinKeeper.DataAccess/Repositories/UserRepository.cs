@@ -35,9 +35,9 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id.ToString() == id);
     }
 
-    public async Task<User> FindByNameAsync(string name)
+    public async Task<User> FindByNameAsync(string normalizedName)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(x => x.Name == name);
+        return await _dbContext.Users.FirstOrDefaultAsync(x => x.NormalizeName == normalizedName);
     }
 
 
