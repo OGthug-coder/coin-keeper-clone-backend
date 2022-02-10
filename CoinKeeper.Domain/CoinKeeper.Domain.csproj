@@ -7,4 +7,13 @@
         <RootNamespace>Domain</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+        <HintPath>..\..\..\..\..\usr\local\share\dotnet\x64\shared\Microsoft.AspNetCore.App\6.0.1\Microsoft.Extensions.Identity.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Identity.Stores, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+        <HintPath>..\..\..\..\..\usr\local\share\dotnet\x64\shared\Microsoft.AspNetCore.App\6.0.1\Microsoft.Extensions.Identity.Stores.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
