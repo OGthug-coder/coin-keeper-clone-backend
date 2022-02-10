@@ -1,5 +1,9 @@
+using System.Security.Claims;
+using CoinKeeper.BusinessLogic.Users.Models;
 using Domain.Entities.Users;
 using Domain.Entities.Users.Registration;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +49,7 @@ namespace Api.Controllers
                         Status = RegistrationStatus.Success,
                         Message = "User created",
                         Errors = Enumerable.Empty<string>(),
-                        Data = user
+                        Data = new UserViewModel(user)
                     };
                 }
                 else
@@ -53,11 +57,61 @@ namespace Api.Controllers
                     errors.AddRange(result.Errors.Select(x => x.Description));
                 }
             }
+            else
+            {
+                errors.AddRange(ModelState.Keys.Select(x => x));                
+            }
 
-            errors.AddRange(ModelState.Keys.Select(x => x));
             return new RegistrationResult()
             {
                 Status = RegistrationStatus.Error,
+                Message = "Invalid data",
+                Errors = errors
+            };
+        }
+
+        [HttpPost]
+        public async Task<LoginResult> Login([FromBody] LoginModel model)
+        {
+            var errors = new List<string>();
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(identity));
+                    
+                    return new LoginResult
+                    {
+                        Status = LoginStatus.Success,
+                        Message = "Successful login",
+                        Data = new UserViewModel(user)
+                    };
+                }
+                else
+                {
+                    return new LoginResult
+                    {
+                        Status = LoginStatus.Error,
+                        Message = "No user found or invalid password"
+                    };
+                }
+                
+            }
+            else
+            {
+                errors.AddRange(ModelState.Keys.Select(x => x));
+            }
+
+            return new LoginResult
+            {
+                Status = LoginStatus.Error,
                 Message = "Invalid data",
                 Errors = errors
             };

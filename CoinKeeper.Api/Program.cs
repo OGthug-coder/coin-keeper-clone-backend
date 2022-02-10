@@ -1,8 +1,11 @@
+using System.Net;
+using coin_keeper_clone_backend;
 using CoinKeeper.DataAccess.Database;
 using CoinKeeper.DataAccess.Infrastructure;
 using CoinKeeper.DataAccess.Repositories;
 using Domain.Entities.Users;
 using Domain.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +18,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.Events.OnRedirectToAccessDenied = StartupUtils.ReplaceRedirector(HttpStatusCode.Forbidden, options.Events.OnRedirectToAccessDenied);
+        options.Events.OnRedirectToLogin = StartupUtils.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
+    });
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
