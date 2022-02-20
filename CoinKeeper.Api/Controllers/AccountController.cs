@@ -4,6 +4,7 @@ using Domain.Entities.Users;
 using Domain.Entities.Users.Registration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,9 @@ namespace Api.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-
-        public AccountController(UserManager<User> userManager)
+        public AccountController(
+            UserManager<User> userManager
+            )
         {
             _userManager = userManager;
         }
@@ -25,7 +27,6 @@ namespace Api.Controllers
             var errors = new List<string>();
             if (ModelState.IsValid)
             {
-                IdentityResult result = null;
                 var user = await _userManager.FindByNameAsync(model.Name);
 
                 if (user != null)
@@ -40,10 +41,12 @@ namespace Api.Controllers
                 
                 user = new User(new Guid(), model.Name, model.Email);
 
-                result = await _userManager.CreateAsync(user, model.Password);
-
+                var result = await _userManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
+                    _userManager.AddToRoleAsync(user, "User").Wait();
+
                     return new RegistrationResult()
                     {
                         Status = RegistrationStatus.Success,
@@ -76,7 +79,7 @@ namespace Api.Controllers
             var errors = new List<string>();
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
+                var user = await _userManager.FindByNameAsync(model.UserName) ?? await _userManager.FindByEmailAsync(model.UserName);
 
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
                 {
@@ -115,6 +118,39 @@ namespace Api.Controllers
                 Message = "Invalid data",
                 Errors = errors
             };
+        }
+
+        [HttpGet]
+        [Authorize]
+        public Task<UserClaims> Claims()
+        {
+            var claims = User.Claims.Select(x => new ClaimViewModel
+            {
+                Type = x.Type,
+                Value = x.Value
+            });
+
+            return Task.FromResult(new UserClaims
+            {
+                UserName = User.Identity!.Name!,
+                Claims = claims
+            });
+        }
+
+        [HttpGet]
+        public Task<UserStateViewModel> Authenticated()
+        {
+            return Task.FromResult(new UserStateViewModel
+            {
+                IsAuthenticated = User.Identity!.IsAuthenticated,
+                UserName = (User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty)!
+            });
+        }
+
+        [HttpPost]
+        public new async Task SignOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }    
 }

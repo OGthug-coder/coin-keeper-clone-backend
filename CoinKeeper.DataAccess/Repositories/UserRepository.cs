@@ -1,6 +1,8 @@
 using CoinKeeper.DataAccess.Database;
+using Domain.Entities.Roles;
 using Domain.Entities.Users;
 using Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoinKeeper.DataAccess.Repositories;
@@ -46,5 +48,31 @@ public class UserRepository : IUserRepository
         _dbContext.Entry(user).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync();
         return user;
+    }
+
+    public async Task<User> FindByEmailAsync(string normalizedEmail)
+    {
+        return await _dbContext.Users.FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
+    }
+
+    public async Task<User> AddRoleAsync(User user, Role role)
+    {
+        user.Roles.Add(role);
+        _dbContext.Entry(user).State = EntityState.Modified;
+        await _dbContext.SaveChangesAsync();
+        return user;
+    }
+
+    public async Task<User> RemoveRoleAsync(User user, Role role)
+    {
+        user.Roles.Remove(role);
+        _dbContext.Entry(user).State = EntityState.Modified;
+        await _dbContext.SaveChangesAsync();
+        return user;
+    }
+
+    public Task<IEnumerable<User>> GetUsersInRoleAsync(string roleName)
+    {
+        return Task.FromResult<IEnumerable<User>>(_dbContext.Users.Where(x => x.Roles.Any(y => y.NormalizedName == roleName)));
     }
 }

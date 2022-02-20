@@ -3,6 +3,7 @@ using coin_keeper_clone_backend;
 using CoinKeeper.DataAccess.Database;
 using CoinKeeper.DataAccess.Infrastructure;
 using CoinKeeper.DataAccess.Repositories;
+using Domain.Entities.Roles;
 using Domain.Entities.Users;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,6 +19,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+builder.Services.AddCors();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
@@ -32,9 +34,14 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
 
-builder.Services.AddIdentityCore<User>();
+builder.Services.AddIdentityCore<User>()
+    .AddRoles<Role>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
 builder.Services.AddScoped<IUserStore<User>, UserStore>();
+builder.Services.AddScoped<IRoleStore<Role>, RoleStore>();
 
 // Services identity depends on
 builder.Services.AddOptions().AddLogging();
@@ -48,6 +55,7 @@ builder.Services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>
 builder.Services.TryAddScoped<IdentityErrorDescriber>();
 builder.Services.TryAddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory<User>>();
 builder.Services.TryAddScoped<UserManager<User>, UserManager<User>>();
+builder.Services.TryAddScoped<RoleManager<Role>, RoleManager<Role>>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -74,10 +82,17 @@ else
 app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseRouting();
+app.UseCors(builder =>
+{
+    builder.WithOrigins("https://localhost:44453", "https://coinkeeperclone.com");
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+    builder.AllowCredentials();
+});
 app.UseAuthorization();
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.UseRouting();
 app.MapControllers();
 app.MapHealthChecks("/health");
 app.MapFallbackToFile("index.html");

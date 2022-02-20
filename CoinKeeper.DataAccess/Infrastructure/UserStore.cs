@@ -4,13 +4,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CoinKeeper.DataAccess.Infrastructure;
 
-public class UserStore : IUserStore<User>, IUserPasswordStore<User>
+public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserEmailStore<User>, IUserRoleStore<User>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public UserStore(IUserRepository userRepository)
+    public UserStore(
+        IUserRepository userRepository,
+        IRoleRepository roleRepository)
     {
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
     }
     
     public void Dispose()
@@ -84,5 +88,70 @@ public class UserStore : IUserStore<User>, IUserPasswordStore<User>
     public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
     {
         return Task.FromResult(user.PasswordHash != null);
+    }
+
+    public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
+    {
+        user.Email = email;
+        return Task.CompletedTask;
+    }
+
+    public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(user.Email);
+    }
+
+    public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(true);
+    }
+
+    public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+    {
+        user.EmailConfirmed = confirmed;
+        return Task.CompletedTask;
+    }
+
+    public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+    {
+        return await _userRepository.FindByEmailAsync(normalizedEmail);
+    }
+
+    public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(user.NormalizedEmail);
+    }
+
+    public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
+    {
+        user.NormalizedEmail = normalizedEmail;
+        return Task.CompletedTask;
+    }
+
+    public async Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+    {
+        var role = await _roleRepository.FindByNameAsync(roleName);
+        await _userRepository.AddRoleAsync(user, role);
+    }
+
+    public async Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+    {
+        var role = await _roleRepository.FindByNameAsync(roleName);
+        await _userRepository.RemoveRoleAsync(user, role);
+    }
+
+    public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+    {
+        return Task.FromResult<IList<string>>(user.Roles.Select(x => x.Name).ToList());
+    }
+
+    public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(user.Roles.Any(x => x.NormalizedName == roleName));
+    }
+
+    public async Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+    {
+        return (await _userRepository.GetUsersInRoleAsync(roleName)).ToList();
     }
 }

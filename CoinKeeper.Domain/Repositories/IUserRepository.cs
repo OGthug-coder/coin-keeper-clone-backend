@@ -1,3 +1,4 @@
+using Domain.Entities.Roles;
 using Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 
@@ -14,4 +15,12 @@ public interface IUserRepository
     Task<User> FindByNameAsync(string normalizedName);
 
     Task<User> UpdateUserAsync(User user);
+
+    Task<User> FindByEmailAsync(string normalizedEmail);
+
+    Task<User> AddRoleAsync(User user, Role role);
+
+    Task<User> RemoveRoleAsync(User user, Role role);
+
+    Task<IEnumerable<User>> GetUsersInRoleAsync(string roleName);
 }
