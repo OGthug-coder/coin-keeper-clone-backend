@@ -27,7 +27,7 @@ namespace Api.Controllers
             var errors = new List<string>();
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Name);
+                var user = await _userManager.FindByNameAsync(model.Name) ?? await _userManager.FindByEmailAsync(model.Email);
 
                 if (user != null)
                 {
