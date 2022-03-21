@@ -35,6 +35,7 @@
     <ItemGroup>
       <ProjectReference Include="..\CoinKeeper.BusinessLogic\CoinKeeper.BusinessLogic.csproj" />
       <ProjectReference Include="..\CoinKeeper.DataAccess\CoinKeeper.DataAccess.csproj" />
+      <ProjectReference Include="..\CoinKeeper.Services\CoinKeeper.Services.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

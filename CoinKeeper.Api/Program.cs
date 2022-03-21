@@ -3,9 +3,11 @@ using coin_keeper_clone_backend;
 using CoinKeeper.DataAccess.Database;
 using CoinKeeper.DataAccess.Infrastructure;
 using CoinKeeper.DataAccess.Repositories;
+using CoinKeeper.Services.Currency;
 using Domain.Entities.Roles;
 using Domain.Entities.Users;
 using Domain.Repositories;
+using Domain.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +66,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         optionsBuilder.MigrationsAssembly("CoinKeeper.Api");
     });
 });
+
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 var app = builder.Build();
 

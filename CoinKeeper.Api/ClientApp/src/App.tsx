@@ -3,6 +3,7 @@ import './App.css';
 import {Link, Outlet} from "react-router-dom";
 import Login from "./components/Login/Login";
 import {Api} from "./api/Api";
+import Header from "./components/Header/Header";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -31,6 +32,7 @@ function App() {
     
     return (
         <div className="wrapper">
+            <Header/>
             <h1>Application</h1>
             <nav
                 style={{
