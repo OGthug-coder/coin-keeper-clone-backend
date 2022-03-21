@@ -1,6 +1,5 @@
 using Domain.Entities.Roles;
 using Domain.Entities.Users;
-using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Repositories;
 

@@ -1,5 +1,4 @@
 using Domain.Entities.Roles;
-using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities.Users;
 
