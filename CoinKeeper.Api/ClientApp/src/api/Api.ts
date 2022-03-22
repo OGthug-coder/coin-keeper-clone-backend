@@ -6,7 +6,6 @@ import {plainToClass} from "class-transformer";
 import {UserStateViewModel} from "../models/User/UserStateViewModel";
 import {RegisterModel} from "../models/User/RegisterModel";
 import {RegistrationResult} from "../models/User/RegistrationResult";
-import {RegistrationStatus} from "../models/User/RegistrationStatus";
 
 export class Api {
     

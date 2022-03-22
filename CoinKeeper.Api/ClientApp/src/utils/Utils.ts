@@ -1,10 +1,10 @@
 export function isDev(){
-    return !process.env.NODE_ENV || process.env.NODE_ENV == "development";
+    return !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 }
 
 export function getCookie(name: string) : string | null {
     let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        "(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : null;
 }

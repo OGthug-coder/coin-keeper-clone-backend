@@ -1,5 +1,4 @@
 import {RegistrationStatus} from "./RegistrationStatus";
-import {string} from "prop-types";
 import {UserViewModel} from "./UserViewModel";
 
 export class RegistrationResult {

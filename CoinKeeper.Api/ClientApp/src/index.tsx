@@ -6,8 +6,6 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Preferences from "./components/Preferences/Preferences";
 import Register from "./components/Register/Register";
 
-const rootElement = document.getElementById("root");
-
 render(
   <React.StrictMode>
       <BrowserRouter>

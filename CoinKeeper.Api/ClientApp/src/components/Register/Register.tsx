@@ -1,9 +1,8 @@
-import React, {SyntheticEvent, useEffect, useState} from "react";
+import React, {SyntheticEvent, useState} from "react";
 import {RegisterModel} from "../../models/User/RegisterModel";
 import {Api} from "../../api/Api";
 import {RegistrationStatus} from "../../models/User/RegistrationStatus";
-import {Route, Navigate, useNavigate} from "react-router-dom";
-import App from "../../App";
+import {useNavigate} from "react-router-dom";
 
 export default function Register() {
     
