@@ -87,12 +87,12 @@ app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseRouting();
-app.UseCors(builder =>
+app.UseCors(corsPolicyBuilder =>
 {
-    builder.WithOrigins("https://localhost:44453", "https://coinkeeperclone.com");
-    builder.AllowAnyHeader();
-    builder.AllowAnyMethod();
-    builder.AllowCredentials();
+    corsPolicyBuilder.WithOrigins("https://localhost:44453", "https://coinkeeperclone.com");
+    corsPolicyBuilder.AllowAnyHeader();
+    corsPolicyBuilder.AllowAnyMethod();
+    corsPolicyBuilder.AllowCredentials();
 });
 app.UseAuthorization();
 app.UseDefaultFiles();

@@ -370,3 +370,4 @@ appsettings.Development.json
 .env.development.local
 
 build/
+/wwwroot/

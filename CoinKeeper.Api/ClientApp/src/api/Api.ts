@@ -1,5 +1,3 @@
-import {isDev} from "../utils/Utils";
-import {Constants} from "../utils/Constants";
 import {LoginModel} from "../models/User/LoginModel";
 import {LoginResult} from "../models/User/LoginResult";
 import {plainToClass} from "class-transformer";
@@ -9,10 +7,8 @@ import {RegistrationResult} from "../models/User/RegistrationResult";
 
 export class Api {
     
-    private static readonly baseURL: string = isDev() ? Constants.DEVELOPMENT_BACKEND_BASE_URL : Constants.PRODUCTION_BASE_URL;
-    
     public static async Login(model: LoginModel): Promise<LoginResult> {
-        let response = await fetch(`${this.baseURL}/api/account/login`, {
+        let response = await fetch("/api/account/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -25,7 +21,7 @@ export class Api {
     }
     
     public static async IsAuthenticated(): Promise<UserStateViewModel> {
-        let response = await fetch(`${this.baseURL}/api/account/authenticated`, {
+        let response = await fetch("/api/account/authenticated", {
             method: "GET",
             credentials: "include"
         });
@@ -34,14 +30,14 @@ export class Api {
     }
     
     public static async Logout(): Promise<void> {
-        await fetch(`${this.baseURL}/api/account/signout`, {
+        await fetch("/api/account/signout", {
             method: "POST",
             credentials: "include"
         });
     }
     
     public static async Register(model: RegisterModel): Promise<RegistrationResult> {
-        const response = await fetch(`${this.baseURL}/api/account/register`, {
+        const response = await fetch("/api/account/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

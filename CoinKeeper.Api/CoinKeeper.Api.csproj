@@ -63,5 +63,22 @@
             </ResolvedFileToPublish>
         </ItemGroup>
     </Target>
+    
+    <Target Name="BuildStaticContent" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+        <RemoveDir Directories="wwwroot" />
+        
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+        
+        <ItemGroup>
+            <FilesToCopy Include="$(SpaRoot)build/*.*" />
+            <JsFiles Include="$(SpaRoot)build/static/js/*.*" />
+            <CssFiles Include="$(SpaRoot)build/static/css/*.*" />
+        </ItemGroup>
+        
+        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="wwwroot/" />
+        <Copy SourceFiles="@(JsFiles)" DestinationFolder="wwwroot/static/js" />
+        <Copy SourceFiles="@(CssFiles)" DestinationFolder="wwwroot/static/css" />
+    </Target>
 
 </Project>
