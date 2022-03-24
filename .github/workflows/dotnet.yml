@@ -33,7 +33,7 @@ jobs:
     - name: Provide application.json
       run: |
         echo $DEV_ENV_FILE >> ./CoinKeeper.Api/appsettings.json
-        echo $DEV_ENV_FILE >> ./CoinKeeper.Api/bin/Release/net6.0/appsettings.json
+        echo $DEV_ENV_FILE >> ./CoinKeeper.Api/bin/Release/net6.0/publish/appsettings.json
         cat ./CoinKeeper.Api/appsettings.json
       shell: bash
       env:
