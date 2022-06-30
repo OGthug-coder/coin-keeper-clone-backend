@@ -38,6 +38,12 @@
       <ProjectReference Include="..\CoinKeeper.Services\CoinKeeper.Services.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Controllers\BaseController.cs" />
+      <Compile Remove="Controllers\ApiStatusCode.cs" />
+      <Compile Remove="Controllers\ApiResponse.cs" />
+    </ItemGroup>
+
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
         <!-- Ensure Node.js is installed -->
         <Exec Command="node --version" ContinueOnError="true">
