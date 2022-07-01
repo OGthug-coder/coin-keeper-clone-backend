@@ -34,7 +34,7 @@ public class CurrencyService : ICurrencyService
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<CurrencyConverterApiResponse>(body);
+                return JsonSerializer.Deserialize<CurrencyConverterApiResponse>(body)!;
             }
         }
     }

@@ -8,5 +8,5 @@ public class UserStateViewModel
     public bool IsAuthenticated { get; set; }
     
     [JsonPropertyName("UserName")]
-    public string UserName { get; set; }
+    public string UserName { get; set; } = null!;
 }

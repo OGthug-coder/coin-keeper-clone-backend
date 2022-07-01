@@ -17,7 +17,7 @@ public class RoleRepository : IRoleRepository
     
     public async Task<Role> CreateAsync(Role role)
     {
-        _dbContext.Roles.Add(role);
+        _dbContext.Roles!.Add(role);
         await _dbContext.SaveChangesAsync();
         return role;
     }
@@ -31,7 +31,7 @@ public class RoleRepository : IRoleRepository
 
     public async Task<Role> DeleteAsync(Role role)
     {
-        _dbContext.Roles.Remove(role);
+        _dbContext.Roles!.Remove(role);
         await _dbContext.SaveChangesAsync();
 
         return role;
@@ -39,11 +39,11 @@ public class RoleRepository : IRoleRepository
 
     public async Task<Role> FindByIdAsync(string roleId)
     {
-        return await _dbContext.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+        return (await _dbContext.Roles!.FirstOrDefaultAsync(x => x.Id == roleId))!;
     }
 
     public async Task<Role> FindByNameAsync(string normalizedRoleName)
     {
-        return await _dbContext.Roles.FirstOrDefaultAsync(x => x.NormalizedName == normalizedRoleName);
+        return (await _dbContext.Roles!.FirstOrDefaultAsync(x => x.NormalizedName == normalizedRoleName))!;
     }
 }

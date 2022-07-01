@@ -38,12 +38,12 @@ public class RoleStore : IRoleStore<Role>
 
     public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
     {
-        return Task.FromResult(role.Id);
+        return Task.FromResult(role.Id)!;
     }
 
     public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
     {
-        return Task.FromResult(role.Name);
+        return Task.FromResult(role.Name)!;
     }
 
     public Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken)
@@ -54,7 +54,7 @@ public class RoleStore : IRoleStore<Role>
 
     public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
     {
-        return Task.FromResult(role.NormalizedName);
+        return Task.FromResult(role.NormalizedName)!;
     }
 
     public Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken)

@@ -18,7 +18,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> CreateAsync(User user)
     {
-        _dbContext.Users.Add(user);
+        _dbContext.Users!.Add(user);
         await _dbContext.SaveChangesAsync();
         
         return user;
@@ -26,7 +26,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> DeleteAsync(User user)
     {
-        _dbContext.Users.Remove(user);
+        _dbContext.Users!.Remove(user);
         await _dbContext.SaveChangesAsync();
 
         return user;
@@ -34,12 +34,12 @@ public class UserRepository : IUserRepository
 
     public async Task<User> FindByIdAsync(string id)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+        return (await _dbContext.Users!.FirstOrDefaultAsync(x => x.Id.ToString() == id))!;
     }
 
     public async Task<User> FindByNameAsync(string normalizedName)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(x => x.NormalizeName == normalizedName);
+        return (await _dbContext.Users!.FirstOrDefaultAsync(x => x.NormalizeName == normalizedName))!;
     }
 
 
@@ -52,7 +52,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> FindByEmailAsync(string normalizedEmail)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
+        return (await _dbContext.Users!.FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail))!;
     }
 
     public async Task<User> AddRoleAsync(User user, Role role)
@@ -73,6 +73,6 @@ public class UserRepository : IUserRepository
 
     public Task<IEnumerable<User>> GetUsersInRoleAsync(string roleName)
     {
-        return Task.FromResult<IEnumerable<User>>(_dbContext.Users.Where(x => x.Roles.Any(y => y.NormalizedName == roleName)));
+        return Task.FromResult<IEnumerable<User>>(_dbContext.Users!.Where(x => x.Roles.Any(y => y.NormalizedName == roleName)));
     }
 }

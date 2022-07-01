@@ -31,19 +31,21 @@ public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserEmailS
         return Task.FromResult(user.Name);
     }
 
-    public async Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
+    public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
     {
         user.Name = userName;
+        return Task.CompletedTask;
     }
 
-    public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
+    public Task<string?> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
     {
-        return Task.FromResult(user.NormalizeName);
+        return Task.FromResult(user.NormalizeName)!;
     }
 
-    public async Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
+    public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
     {
         user.NormalizeName = normalizedName;
+        return Task.CompletedTask;
     }
 
     public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
@@ -80,9 +82,9 @@ public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserEmailS
         return Task.CompletedTask;
     }
 
-    public Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
+    public Task<string?> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
     {
-        return Task.FromResult(user.PasswordHash);
+        return Task.FromResult(user.PasswordHash)!;
     }
 
     public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
@@ -117,9 +119,9 @@ public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserEmailS
         return await _userRepository.FindByEmailAsync(normalizedEmail);
     }
 
-    public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
+    public Task<string?> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
     {
-        return Task.FromResult(user.NormalizedEmail);
+        return Task.FromResult(user.NormalizedEmail)!;
     }
 
     public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
@@ -140,9 +142,9 @@ public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserEmailS
         await _userRepository.RemoveRoleAsync(user, role);
     }
 
-    public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+    public Task<IList<string?>> GetRolesAsync(User user, CancellationToken cancellationToken)
     {
-        return Task.FromResult<IList<string>>(user.Roles.Select(x => x.Name).ToList());
+        return Task.FromResult<IList<string?>>(user.Roles.Select(x => x.Name).ToList()!);
     }
 
     public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
