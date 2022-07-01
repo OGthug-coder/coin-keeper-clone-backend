@@ -8,23 +8,24 @@ namespace CoinKeeper.Services.Currency;
 
 public class CurrencyService : ICurrencyService
 {
-    private const string BaseUri = "https://currency-converter5.p.rapidapi.com";
     private const string BasicCurrenciesUrl = "currency/convert?format=json&from=RUB&to=USD,EUR&amount=";
 
     private readonly IConfiguration Configuration;
-    public CurrencyService(IConfiguration configuration)
+    private readonly IHttpClientFactory HttpClientFactory;
+    public CurrencyService(IConfiguration configuration, IHttpClientFactory httpClientFactory)
     {
         Configuration = configuration;
+        HttpClientFactory = httpClientFactory;
     }
     
     public async Task<CurrencyConverterApiResponse> GetBasicCurrenciesInfo()
     {
-        using (var client = new HttpClient())
+        using (var client = HttpClientFactory.CreateClient("CurrencyService"))
         {
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{BaseUri}/{BasicCurrenciesUrl}")
+                RequestUri = new Uri($"{client.BaseAddress}/{BasicCurrenciesUrl}")
             };
 
             await SetHeaders(request.Headers);

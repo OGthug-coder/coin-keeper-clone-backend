@@ -67,6 +67,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     });
 });
 
+builder.Services.AddHttpClient("CurrencyService", client =>
+{
+    client.BaseAddress = new Uri("https://currency-converter5.p.rapidapi.com");
+});
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 var app = builder.Build();
